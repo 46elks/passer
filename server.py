@@ -16,11 +16,16 @@ def incoming_sms():
     incoming = request.get_json()
     print(incoming)
 
+@app.route('/blergh')
+def blergh():
+    return 'BLEEERGH!'
+
 @app.route('/authorize')
 def authorize_twitter():
+    global twitter_session
     twitter_confirm_url = twitter_session.get_user_auth_url()
     if not twitter_confirm_url:
-        exit(-1)
+        return 'Could not initialize Twitter session'
     return 'Authorize Passer on\n%s' % twitter_confirm_url
 
 @app.route('/authorize/<pin>')
