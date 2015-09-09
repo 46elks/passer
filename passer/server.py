@@ -27,7 +27,7 @@ def authorize_twitter():
 def authorize_pin(pin):
     twitter_session.confirm_pin(pin)
     twitter_user = json.loads(twitter_session.verify_credentials())
-    if 'screen_name' in twitter_user
+    if 'screen_name' in twitter_user:
         twitter_authorized = True
         return 'Authorized as %s' % twitter_user['screen_name']
 
