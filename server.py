@@ -3,7 +3,7 @@ from twitter import Twitter
 import json
 
 app = Flask(__name__)
-twitter_session = None
+twitter_session = Twitter()
 twitter_authorized = False
 authorized_numbers = []
 
@@ -37,6 +37,5 @@ def authorize_pin(pin):
         return 'Authorized as %s' % twitter_user['screen_name']
 
 if __name__ == '__main__':
-    twitter_session = Twitter()
     print('Starting server...')
     app.run()
