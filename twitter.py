@@ -48,7 +48,7 @@ class Twitter:
         else:
             return False
         return True
-    
+
     def get_user_auth_url(self):
         if not self.oauth_token:
             if not self.get_request_token():
@@ -62,7 +62,7 @@ class Twitter:
                  data={'verifier': pin}))
         self.oauth_token = result['oauth_token'][0]
         self.oauth_token_secret = result['oauth_token_secret'][0]
-    
+
     def verify_credentials(self):
         return self.twitter_request_helper(
               '/1.1/account/verify_credentials.json',
