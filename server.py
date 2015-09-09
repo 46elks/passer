@@ -35,6 +35,8 @@ def authorize_pin(pin):
     if 'screen_name' in twitter_user:
         twitter_authorized = True
         return 'Authorized as %s' % twitter_user['screen_name']
+    else:
+        return 'Could not authorize'
 
 if __name__ == '__main__':
     print('Starting server...')
