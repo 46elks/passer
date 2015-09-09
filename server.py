@@ -38,6 +38,11 @@ def authorize_pin(pin):
     else:
         return 'Could not authorize'
 
+@app.route('/whoami')
+def whoami():
+    twitter_user = json.loads(twitter_session.verify_credentials())
+    return 'Authorized as %s' % twitter_user['screen_name']
+
 if __name__ == '__main__':
     print('Starting server...')
     app.run()
