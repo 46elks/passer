@@ -15,10 +15,11 @@ def index():
 
 @app.route('/incoming_sms', methods=['POST'])
 def incoming_sms():
-    try:
-        incoming = json.loads(request.data.decode('utf-8'))
-    except:
-        return request.data.decode('utf-8')
+    if type(request.data) == bytes:
+        data = request.data.decode('utf-8')
+    elif type(request.data) == str:
+        data = request.data
+    incoming = json.loads(data)
     message = elks_session.get_text_by_id(incoming['id'])
     if message:
         return message['message']
