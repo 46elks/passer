@@ -16,12 +16,17 @@ def index():
 
 @app.route('/incoming_sms', methods=['POST'])
 def incoming_sms():
-    incoming = request.form['id'].strip()
-    message = elks_session.get_text_by_id(incoming)
-    if message and message['from'] in authorized_numbers:
-        twitter_session.post_tweet(message['message'])
-        return ''
-    else:
+    try:
+        if not twitter_authorized:
+            return 'Authorize for Twitter'
+        incoming = request.form['id'].strip()
+        message = elks_session.get_text_by_id(incoming)
+        if message and message['from'] in authorized_numbers:
+            twitter_session.post_tweet(message['message'])
+            return ''
+        else:
+            return 'Failed posting tweet'
+    except:
         return 'Failed posting tweet'
 
 @app.route('/authorize')

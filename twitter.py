@@ -1,5 +1,5 @@
 from requests_oauthlib import OAuth1Session
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, urlencode
 import os
 import json
 
@@ -35,7 +35,7 @@ class Twitter:
             return {}
         url = '%s/%s' % (twitbase, target)
         if request_type == 'POST':
-            result = session.post(url, data)
+            result = session.post(url, data=data)
         elif request_type == 'GET':
             result = session.get(url)
         return result.text
@@ -74,9 +74,9 @@ class Twitter:
         tweet = {
                     'status': content
                 }
-        tweet = json.dumps(tweet)
+        tweet = urlencode(tweet)
         return self.twitter_request_helper(
-                '/1.1/statuses/update',
+                '/1.1/statuses/update.json',
                 data=tweet
                 )
 
