@@ -27,14 +27,15 @@ class Twitter:
         else:
             return None
 
-    def twitter_request_helper(self, target, data={}, request_type='POST'):
+    def twitter_request_helper(self, target, data=None, oauthdata={},
+            request_type='POST'):
         twitbase = 'https://api.twitter.com'
-        session = self.make_session(data=data)
+        session = self.make_session(data=oauthdata)
         if not session:
             return {}
         url = '%s/%s' % (twitbase, target)
         if request_type == 'POST':
-            result = session.post(url)
+            result = session.post(url, data)
         elif request_type == 'GET':
             result = session.get(url)
         return result.text
@@ -60,7 +61,7 @@ class Twitter:
 
     def confirm_pin(self, pin):
         result = parse_qs(self.twitter_request_helper('/oauth/access_token',
-                 data={'verifier': pin}))
+                 oauthdata={'verifier': pin}))
         self.oauth_token = result['oauth_token'][0]
         self.oauth_token_secret = result['oauth_token_secret'][0]
 

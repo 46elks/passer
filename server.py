@@ -18,7 +18,7 @@ def index():
 def incoming_sms():
     incoming = request.form['id'].strip()
     message = elks_session.get_text_by_id(incoming)
-    if message and message['number'] in authorized_numbers:
+    if message and message['from'] in authorized_numbers:
         twitter_session.post_tweet(message['message'])
         return ''
     else:
