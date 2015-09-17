@@ -16,7 +16,10 @@ def index():
 @app.route('/incoming_sms', methods=['POST'])
 def incoming_sms():
     incoming = json.loads(request.data.decode('utf-8'))
-    message = elks_session.get_text_by_id(incoming['id'])
+    try:
+        message = elks_session.get_text_by_id(incoming['id'])
+    except Exception:
+        return 'id not found'
     if message:
         return message['message']
     else:
