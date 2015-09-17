@@ -15,12 +15,8 @@ def index():
 
 @app.route('/incoming_sms', methods=['POST'])
 def incoming_sms():
-    if type(request.data) == bytes:
-        data = request.data.decode('utf-8')
-    elif type(request.data) == str:
-        data = request.data
-    incoming = parse_qs(data)
-    message = elks_session.get_text_by_id(incoming['id'])
+    incoming = request.form['id'].strip()
+    message = elks_session.get_text_by_id(incoming)
     if message:
         return message['message']
     else:
