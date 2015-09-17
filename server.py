@@ -1,8 +1,10 @@
 from flask import Flask, request
 from twitter import Twitter
+from elks import Elks
 import json
 
 app = Flask(__name__)
+elks_session = Elks()
 twitter_session = Twitter()
 twitter_authorized = False
 authorized_numbers = []
@@ -14,7 +16,11 @@ def index():
 @app.route('/incoming_sms', methods=['POST'])
 def incoming_sms():
     incoming = request.get_json()
-    print(incoming)
+    message = elks_session.get_text_by_id(incoming['id'])
+    if message:
+        return message['message']
+    else:
+        return 'Failed posting tweet'
 
 @app.route('/blergh')
 def blergh():
