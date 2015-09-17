@@ -7,7 +7,7 @@ app = Flask(__name__)
 elks_session = Elks()
 twitter_session = Twitter()
 twitter_authorized = False
-authorized_numbers = []
+authorized_numbers = ['+46709784966']
 
 @app.route('/')
 def index():
@@ -17,8 +17,9 @@ def index():
 def incoming_sms():
     incoming = request.form['id'].strip()
     message = elks_session.get_text_by_id(incoming)
-    if message:
-        return message['message']
+    if message and message['number'] in authorized_numbers:
+        twitter_session.post_tweet(message['message'])
+        return ''
     else:
         return 'Failed posting tweet'
 

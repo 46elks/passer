@@ -1,6 +1,7 @@
 from requests_oauthlib import OAuth1Session
 from urllib.parse import parse_qs
 import os
+import json
 
 class Twitter:
     client_key = None
@@ -67,4 +68,14 @@ class Twitter:
         return self.twitter_request_helper(
               '/1.1/account/verify_credentials.json',
               request_type='GET')
+
+    def post_tweet(self, content):
+        tweet = {
+                    'status': content
+                }
+        tweet = json.dumps(tweet)
+        return self.twitter_request_helper(
+                '/1.1/statuses/update',
+                data=tweet
+                )
 
