@@ -1,7 +1,7 @@
 from flask import Flask, request
 from twitter import Twitter
 from elks import Elks
-import json
+from urllib.parse import parse_qs
 
 app = Flask(__name__)
 elks_session = Elks()
@@ -19,7 +19,7 @@ def incoming_sms():
         data = request.data.decode('utf-8')
     elif type(request.data) == str:
         data = request.data
-    incoming = json.loads(data)
+    incoming = parse_qs(data)
     message = elks_session.get_text_by_id(incoming['id'])
     if message:
         return message['message']
