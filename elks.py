@@ -22,7 +22,7 @@ class Elks:
         auth = b('BASIC %s' % (b64encode(keysecret)))
 
         if data:
-            conn = Request(call_url, b(urlencode(data))
+            conn = Request(call_url, b(urlencode(data)))
         else:
             conn = Request(call_url)
 
