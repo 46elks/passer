@@ -18,8 +18,10 @@ class Elks:
 
     def query_api(self, endpoint, data=None):
         b = lambda x: bytes(x, 'utf-8')
+        s = lambda x: x.decode('utf-8')
         keysecret = '%s:%s' % (self.client_key, self.client_secret)
-        auth = b('BASIC %s' % (b64encode(keysecret)))
+        auth = b('BASIC %s' % s(b64encode(b(keysecret))))
+        call_url = "%s%s" % (self.baseurl, endpoint)
 
         if data:
             conn = Request(call_url, b(urlencode(data)))
@@ -32,10 +34,10 @@ class Elks:
             response = urlopen(conn)
         except HTTPError as err:
             return False
-        return response.read()
+        return s(response.read())
 
     def get_text_by_id(self, id_):
-        elks_data = query_api('/SMS/%s' % id_) 
+        elks_data = self.query_api('SMS/%s' % id_) 
         if not elks_data:
             return False
         data = json.loads(elks_data)

@@ -11,20 +11,16 @@ authorized_numbers = []
 
 @app.route('/')
 def index():
-    return ''
+    return 'Welcome to Passer, the self-hosted text-to-tweet service!'
 
 @app.route('/incoming_sms', methods=['POST'])
 def incoming_sms():
-    incoming = request.get_json()
+    incoming = json.loads(request.data.decode('utf-8'))
     message = elks_session.get_text_by_id(incoming['id'])
     if message:
         return message['message']
     else:
         return 'Failed posting tweet'
-
-@app.route('/blergh')
-def blergh():
-    return 'BLEEERGH!'
 
 @app.route('/authorize')
 def authorize_twitter():
@@ -51,4 +47,5 @@ def whoami():
 
 if __name__ == '__main__':
     print('Starting server...')
+    app.debug = True
     app.run()
